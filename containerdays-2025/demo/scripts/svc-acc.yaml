@@ -1,0 +1,8 @@
+# Service account update to use docker secret
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: default
+  namespace: default
+imagePullSecrets:
+- name: ghcr
