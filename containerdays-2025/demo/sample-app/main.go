@@ -7,6 +7,7 @@ import (
 	"os"
 )
 
+// Main function
 func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
