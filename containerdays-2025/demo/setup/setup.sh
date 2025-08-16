@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# Start colima for docker
+colima start
+
+# Create kind cluster
+kind create cluster --config=./kind.yaml 
+
+# Complex setup: install Kyverno via Helm
+helm repo add kyverno https://kyverno.github.io/kyverno/
+helm install kyverno kyverno/kyverno -n kyverno --create-namespace
