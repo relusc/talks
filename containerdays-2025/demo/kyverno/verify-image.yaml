@@ -1,0 +1,38 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: verify-image-keyless
+  annotations:
+    policies.kyverno.io/title: Verify image with keyless cosign
+    policies.kyverno.io/severity: medium
+    kyverno.io/kyverno-version: 1.9.0
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      Verifies that only signed images can be deployed. Only signatures that are issued by specific subjects are allowed.
+      This gives you control over what kind of signing subjects are allowed.
+spec:
+  validationFailureAction: Enforce
+  background: false
+  rules:
+    - name: verify-image-keyless
+      match:
+        any:
+        - resources:
+            kinds:
+              - Pod
+      verifyImages:
+      - imageReferences:
+        - "*"
+        attestors:
+          - entries:
+            - keys:
+                # Scenario 1: Verify with key using pre-existing Kubernetes secret
+                secret:
+                  name: cosign-public
+                  namespace: kyverno
+            - keyless:
+                # Scenario 2: Verify using identity/subject -> keyless signing
+                subject: "https://github.com/relusc/talks/.github/workflows/*"
+                issuer: "https://token.actions.githubusercontent.com"
+                rekor:
+                  url: https://rekor.sigstore.dev

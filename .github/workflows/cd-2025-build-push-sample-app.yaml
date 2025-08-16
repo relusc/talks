@@ -2,8 +2,10 @@ name: Build, Push and Sign Container Image
 
 on:
   push:
-    branches: [main]
-    paths: [./containerdays-2025/demo/sample-app/**]
+    branches:
+      - "main"
+    paths:
+      - "containerdays-2025/demo/sample-app/**"
 
 env:
   REGISTRY: ghcr.io
@@ -42,7 +44,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: ${{ env.WORKDIR }}
-          platforms: linux/amd64
+          platforms: linux/arm64
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
           cache-from: type=gha

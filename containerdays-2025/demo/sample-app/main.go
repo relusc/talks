@@ -7,6 +7,7 @@ import (
 	"os"
 )
 
+// Main function
 func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -20,6 +21,7 @@ func main() {
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
 
+// Handler function
 func podNameHandler(w http.ResponseWriter, r *http.Request) {
 	podName := os.Getenv("HOSTNAME")
 	if podName == "" {
