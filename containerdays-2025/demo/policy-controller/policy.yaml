@@ -1,0 +1,19 @@
+apiVersion: policy.sigstore.dev/v1alpha1
+kind: ClusterImagePolicy
+metadata:
+  name: cosign-validate-signature
+spec:
+  images:
+  # Match all images
+  - glob: "**"
+  authorities:
+  # Scenario 1: Verify with key using pre-existing Kubernetes secret
+  - key:
+      secretRef:
+        name: cosign-public
+        namespace: cosign-system
+  # Scenario 2: Verify using identity/subject -> keyless signing
+  - keyless:
+      identities:
+        - subject: "https://github.com/relusc/talks/.github/workflows/cd-2025-build-push-sample-app.yaml@refs/heads/main"
+          issuer: "https://token.actions.githubusercontent.com"

@@ -1,5 +1,5 @@
 # Multi-stage build
-FROM golang:1.24-alpine AS builder
+FROM golang:1.25-alpine AS builder
 
 WORKDIR /app
 
@@ -7,7 +7,7 @@ WORKDIR /app
 COPY . .
 
 # App build, statically linked for alpine
-RUN CGO_ENABLED=0 GOOS=linux go build -o main .
+RUN CGO_ENABLED=0 GOOS=linux GOARCH="arm64" go build -o main .
 
 # Alpine image
 FROM alpine:latest
