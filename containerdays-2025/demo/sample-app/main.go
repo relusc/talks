@@ -23,16 +23,11 @@ func main() {
 
 // Handler function
 func podNameHandler(w http.ResponseWriter, r *http.Request) {
-	podName := os.Getenv("HOSTNAME")
-	if podName == "" {
-		podName = "unknown-pod"
-	}
-
 	w.Header().Set("Content-Type", "text/plain")
 	w.WriteHeader(http.StatusOK)
-	fmt.Fprintf(w, "Pod name: %s\n", podName)
+	fmt.Fprintln(w, "Hello ContainerDays")
 
-	log.Printf("Request from %s - Pod Name: %s", r.RemoteAddr, podName)
+	log.Printf("Request from %s", r.RemoteAddr)
 }
 
 func healthHandler(w http.ResponseWriter, r *http.Request) {

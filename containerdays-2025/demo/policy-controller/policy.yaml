@@ -5,6 +5,7 @@ metadata:
 spec:
   images:
   # Match all images
+  # Namespace still needs to be labeled so that the policy applies to it: https://docs.sigstore.dev/policy-controller/overview/
   - glob: "**"
   authorities:
   # Scenario 1: Verify with key using pre-existing Kubernetes secret
