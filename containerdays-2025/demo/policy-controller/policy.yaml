@@ -9,10 +9,13 @@ spec:
   - glob: "**"
   authorities:
   # Scenario 1: Verify with key using pre-existing Kubernetes secret
+  # NOTE: Make sure to use your own public key here
   - key:
-      secretRef:
-        name: cosign-public
-        namespace: cosign-system
+      hashAlgorithm: sha256
+      data: |
+        -----BEGIN PUBLIC KEY-----
+        ...
+        -----END PUBLIC KEY-----
   # Scenario 2: Verify using identity/subject -> keyless signing
   - keyless:
       identities:
