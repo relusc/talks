@@ -3,7 +3,7 @@ FROM golang:1.25-alpine AS builder
 
 WORKDIR /app
 
-# Source-Code kopieren
+# Copy source code
 COPY . .
 
 # App build, statically linked for alpine
@@ -12,15 +12,15 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH="arm64" go build -o main .
 # Alpine image
 FROM alpine:latest
 
-# Binary aus Builder-Stage kopieren
+# Copy binary from build stage
 COPY --from=builder /app/main .
 
-# Port 8080 exposieren
+# Expose port 8080
 EXPOSE 8080
 
 # non-root user
 RUN adduser -D -s /bin/sh appuser
 USER appuser
 
-# Anwendung starten
+# Start application
 CMD ["./main"]
