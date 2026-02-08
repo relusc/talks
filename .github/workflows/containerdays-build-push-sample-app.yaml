@@ -55,7 +55,7 @@ jobs:
           DIGEST: ${{ steps.build-and-push.outputs.digest }}
         run: |
           echo "Signing image with digest: ${DIGEST}"
-          cosign sign --yes --new-bundle-format=false --use-signing-config=false "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${DIGEST}"
+          cosign sign --yes "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${DIGEST}"
 
           # Verify with 
           # cosign verify \
