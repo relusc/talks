@@ -1,5 +1,2 @@
-# Do not upload cosign keys
-cosign*
-
 # Do not upload Github PATs ;)
 *token*
