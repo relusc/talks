@@ -1,5 +1,5 @@
 # Multi-stage build
-FROM golang:1.25-alpine AS builder
+FROM golang:1.26-alpine AS builder
 
 WORKDIR /app
 
@@ -14,9 +14,6 @@ FROM alpine:latest
 
 # Copy binary from build stage
 COPY --from=builder /app/main .
-
-# Expose port 8080
-EXPOSE 8080
 
 # non-root user
 RUN adduser -D -s /bin/sh appuser

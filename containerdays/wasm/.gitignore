@@ -1,2 +1,12 @@
 # Do not upload Github PATs ;)
 *token*
+
+# Do not upload WASM artifacts
+*.wasm
+
+# Do not upload built binaries
+wasm-sample-app
+main
+
+# Do not upload wasm shim
+*shim*

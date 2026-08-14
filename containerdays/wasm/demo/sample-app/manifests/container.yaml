@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: container-demo
+spec:
+  containers:
+    - name: container-demo
+      image: registry.local:5000/cd-sample-app:container

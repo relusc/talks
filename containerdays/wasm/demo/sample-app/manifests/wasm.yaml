@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: wasm-demo
+spec:
+  runtimeClassName: wasmtime
+  containers:
+    - name: wasm-demo
+      image: registry.local:5000/cd-sample-app:wasm
+      command: ["main.wasm"]
