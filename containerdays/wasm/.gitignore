@@ -5,8 +5,11 @@
 *.wasm
 
 # Do not upload built binaries
-wasm-sample-app
 main
 
 # Do not upload wasm shim
 *shim*
+
+# Do not upload WIT files and deps
+*gen*
+*deps*

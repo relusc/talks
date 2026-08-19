@@ -4,6 +4,14 @@ set -euo pipefail
 
 kind create cluster --config cluster/config.yaml
 
+# Apply manifests
+kubectl apply -f "./cluster/assets/**.yaml"
+
+# Install metrics server
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+kubectl patch -n kube-system deployment metrics-server --type=json \
+  -p '[{"op":"add","path":"/spec/template/spec/containers/0/args/-","value":"--kubelet-insecure-tls"}]'
+
 # Local registry setup
 REGISTRY_NODE=cd-demo-worker3
 
@@ -28,6 +36,3 @@ docker cp cluster/assets/containerd-shim-wasmtime-v1 \
 
 docker exec "$WASM_NODE" \
   chmod +x /usr/local/bin/containerd-shim-wasmtime-v1
-
-# Apply manifests
-kubectl apply -f "./cluster/assets/**.yaml"

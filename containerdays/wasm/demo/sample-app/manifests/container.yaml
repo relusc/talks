@@ -1,8 +1,23 @@
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: container-demo
 spec:
-  containers:
-    - name: container-demo
-      image: registry.local:5000/cd-sample-app:container
+  replicas: 1
+  selector:
+    matchLabels:
+      app: container-demo
+  template:
+    metadata:
+      labels:
+        app: container-demo
+    spec:
+      terminationGracePeriodSeconds: 0
+      containers:
+        - name: container-demo
+          image: registry.local:5000/sample-app-container:830F1DB
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+      nodeSelector:
+        type: container

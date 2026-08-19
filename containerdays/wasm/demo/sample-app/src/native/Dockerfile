@@ -10,14 +10,13 @@ COPY . .
 RUN CGO_ENABLED=0 GOOS=linux GOARCH="arm64" go build -o main .
 
 # Alpine image
-FROM alpine:latest
+FROM scratch
 
 # Copy binary from build stage
 COPY --from=builder /app/main .
 
 # non-root user
-RUN adduser -D -s /bin/sh appuser
-USER appuser
+USER 65532:65532
 
 # Start application
 CMD ["./main"]
