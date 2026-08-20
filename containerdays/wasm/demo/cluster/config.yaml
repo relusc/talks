@@ -18,10 +18,4 @@ nodes:
 containerdConfigPatches:
   - |-
     [plugins."io.containerd.cri.v1.runtime".containerd.runtimes.wasmtime]
-    runtime_type = "io.containerd.wasmtime.v1"
-    [plugins."io.containerd.cri.v1.runtime".containerd.runtimes.wasmer]
-    runtime_type = "io.containerd.wasmer.v1"
-    [plugins."io.containerd.cri.v1.runtime".containerd.runtimes.wasmedge]
-    runtime_type = "io.containerd.wasmedge.v1"
-    [plugins."io.containerd.cri.v1.runtime".containerd.runtimes.wamr]
-    runtime_type = "io.containerd.wamr.v1"
+      runtime_type = "io.containerd.wasmtime.v1"

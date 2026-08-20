@@ -16,9 +16,14 @@ spec:
       terminationGracePeriodSeconds: 0
       containers:
         - name: wasmtime
-          image: registry.local:5000/sample-app-wasm:830F1DB
+          image: registry.local:5000/sample-app-wasm:c38135b
           command: ["main.wasm"]
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
       nodeSelector:
         type: wasm

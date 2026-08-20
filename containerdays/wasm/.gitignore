@@ -11,5 +11,4 @@ main
 *shim*
 
 # Do not upload WIT files and deps
-*gen*
 *deps*

@@ -1,11 +1,14 @@
 package relusc:containerdays;
 
-// "hello" is the WIT world for our component. `wasmcloud:component-go/imports`
-// pulls in the standard imports the wasmCloud Go SDK needs (logging, config,
-// outgoing-handler for any outbound HTTP calls, etc). `wasi:http/incoming-handler`
-// is the export that lets a wasi:http-capable runtime (wasmtime serve, wash, ...)
-// route requests into our component.
+// "simpleweb" is the WIT world for our component. 
+
+// `wasi:http/proxy` is the standard WASI-defined world for an HTTP
+// server/proxy component: it exports `wasi:http/incoming-handler` and
+// imports exactly what a plain HTTP component needs (outgoing-handler,
+// clocks, io, etc). This is the world `wasmtime serve` implements natively.
 world simpleweb {
-    include wasmcloud:component-go/imports@0.1.0;
-    export wasi:http/incoming-handler@0.2.0;
+    include wasi:http/proxy@0.2.0;
+    import wasi:cli/environment@0.2.0;
+    import wasi:filesystem/types@0.2.0;
+    import wasi:filesystem/preopens@0.2.0;
 }

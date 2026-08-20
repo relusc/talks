@@ -2,13 +2,11 @@
 
 set -euo pipefail
 
-image_tag=$(uuidgen | tr -d '-' | cut -c1-7)
+image_tag=$(uuidgen | tr -d '-' | tr A-F a-f | cut -c1-7)
 
 cd wasm
 
-wkg fetch --config wkg-config.toml
-
-go generate ./...
+wkg fetch
 
 # Use tinygo as it is specialized on WASM/WASI support
 # standard go build supports WASI preview 1 only

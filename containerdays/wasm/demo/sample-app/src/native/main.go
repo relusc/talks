@@ -1,54 +1,62 @@
 package main
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
+	"time"
 )
 
 type Response struct {
-	Status      uint16
+	Status      int
 	ContentType string
 	Body        []byte
 }
 
+type EchoResponseBody struct {
+	Message string    `json:"message"`
+	Date    time.Time `json:"date"`
+}
+
 func main() {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		result := handle(r.URL.Path)
-
-		w.Header().Set("Content-Type", result.ContentType)
-		w.WriteHeader(int(result.Status))
-
-		_, _ = w.Write(result.Body)
-	})
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", handleRoot)
+	mux.HandleFunc("/healthz", handleHealth)
 
 	log.Println("listening on :8080")
 
-	if err := http.ListenAndServe(":8080", nil); err != nil {
+	if err := http.ListenAndServe(":8080", mux); err != nil {
 		log.Fatal(err)
 	}
 }
 
-func handle(path string) Response {
-	switch path {
-	case "/":
-		return Response{
-			Status:      200,
-			ContentType: "text/plain",
-			Body:        []byte("Hello from Go!\n"),
-		}
-
-	case "/healthz":
-		return Response{
-			Status:      200,
-			ContentType: "text/plain",
-			Body:        []byte("ok\n"),
-		}
-
-	default:
-		return Response{
-			Status:      404,
-			ContentType: "text/plain",
-			Body:        []byte("not found\n"),
-		}
+func handleRoot(w http.ResponseWriter, r *http.Request) {
+	e := EchoResponseBody{
+		Message: "Hello from ContainerDays 2026 by Container!",
+		Date:    time.Now(),
 	}
+
+	eb, _ := json.Marshal(e)
+
+	resp := Response{
+		Status:      http.StatusOK,
+		ContentType: "application/json",
+		Body:        eb,
+	}
+	writeResponse(resp, w)
+}
+
+func handleHealth(w http.ResponseWriter, r *http.Request) {
+	resp := Response{
+		Status:      http.StatusOK,
+		ContentType: "text/plain",
+		Body:        []byte("OK\n"),
+	}
+	writeResponse(resp, w)
+}
+
+func writeResponse(r Response, w http.ResponseWriter) {
+	w.Header().Set("Content-Type", r.ContentType)
+	w.WriteHeader(r.Status)
+	_, _ = w.Write(r.Body)
 }

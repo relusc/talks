@@ -4,6 +4,9 @@ set -euo pipefail
 
 kind create cluster --config cluster/config.yaml
 
+WASM_NODE=cd-demo-worker
+REGISTRY_NODE=cd-demo-worker3
+
 # Apply manifests
 kubectl apply -f "./cluster/assets/**.yaml"
 
@@ -13,7 +16,6 @@ kubectl patch -n kube-system deployment metrics-server --type=json \
   -p '[{"op":"add","path":"/spec/template/spec/containers/0/args/-","value":"--kubelet-insecure-tls"}]'
 
 # Local registry setup
-REGISTRY_NODE=cd-demo-worker3
 
 REGISTRY_IP=$(kubectl -n registry get svc registry -o jsonpath='{.spec.clusterIP}')
 
@@ -29,10 +31,11 @@ EOF
 done
 
 # WASM setup 
-WASM_NODE=cd-demo-worker
-
+# using wasmtime
 docker cp cluster/assets/containerd-shim-wasmtime-v1 \
   "$WASM_NODE:/usr/local/bin/containerd-shim-wasmtime-v1"
 
 docker exec "$WASM_NODE" \
   chmod +x /usr/local/bin/containerd-shim-wasmtime-v1
+
+

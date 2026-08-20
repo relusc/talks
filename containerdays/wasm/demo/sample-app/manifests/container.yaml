@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: container-demo
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: container-demo
@@ -15,9 +15,13 @@ spec:
       terminationGracePeriodSeconds: 0
       containers:
         - name: container-demo
-          image: registry.local:5000/sample-app-container:830F1DB
+          image: registry.local:5000/sample-app-container:A954872
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
       nodeSelector:
         type: container
