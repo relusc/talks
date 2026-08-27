@@ -23,8 +23,6 @@ func main() {
 	mux.HandleFunc("/", handleRoot)
 	mux.HandleFunc("/healthz", handleHealth)
 
-	log.Println("listening on :8080")
-
 	if err := http.ListenAndServe(":8080", mux); err != nil {
 		log.Fatal(err)
 	}

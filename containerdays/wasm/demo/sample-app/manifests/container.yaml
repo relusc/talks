@@ -15,7 +15,7 @@ spec:
       terminationGracePeriodSeconds: 0
       containers:
         - name: container-demo
-          image: registry.local:5000/sample-app-container:b3b972a
+          image: registry.local:5000/sample-app-container:be25b4b
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080

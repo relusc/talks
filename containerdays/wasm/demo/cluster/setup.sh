@@ -5,13 +5,11 @@ set -euo pipefail
 CERTMANAGER_VERSION=1.21.1
 SPIN_VERSION=0.6.1
 
+# Create cluster
 kind create cluster --config cluster/config.yaml
 
 WASM_NODE=cd-demo-worker
 REGISTRY_NODE=cd-demo-worker3
-
-# Apply manifests
-kubectl apply -f "./cluster/assets/**.yaml"
 
 # Install Spin operator
 kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v${CERTMANAGER_VERSION}/cert-manager.yaml
@@ -41,6 +39,7 @@ docker exec "$WASM_NODE" \
   chmod +x /usr/local/bin/containerd-shim-spin-v2
 
 # Local registry setup
+kubectl apply -f "./cluster/registry.yaml"
 
 REGISTRY_IP=$(kubectl -n registry get svc registry -o jsonpath='{.spec.clusterIP}')
 
@@ -54,13 +53,3 @@ for NODE in $(kind get nodes --name cd-demo); do
   capabilities = ["pull", "resolve"]
 EOF
 done
-
-# WASM setup 
-# using wasmtime
-docker cp cluster/assets/containerd-shim-wasmtime-v1 \
-  "$WASM_NODE:/usr/local/bin/containerd-shim-wasmtime-v1"
-
-docker exec "$WASM_NODE" \
-  chmod +x /usr/local/bin/containerd-shim-wasmtime-v1
-
-

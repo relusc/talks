@@ -7,6 +7,11 @@ name = "wasi:cli"
 registry = "wasi.dev"
 
 [[packages.versions]]
+requirement = "=0.3.1"
+version = "0.3.1"
+digest = "sha256:c3205717ce7a8347ee137f3aa1ec70d7c6880ed10406e29fc49fbe5250b67824"
+
+[[packages.versions]]
 requirement = "=0.2.0"
 version = "0.2.0"
 digest = "sha256:e7e85458e11caf76554b724ebf4f113259decf0f3b1ee2e2930de096f72114a7"
@@ -16,6 +21,11 @@ name = "wasi:filesystem"
 registry = "wasi.dev"
 
 [[packages.versions]]
+requirement = "=0.3.1"
+version = "0.3.1"
+digest = "sha256:526ed61c215a905872a8081be04926c37f44bdd1fb049b7420afc7f80b8dcfb3"
+
+[[packages.versions]]
 requirement = "=0.2.0"
 version = "0.2.0"
 digest = "sha256:39c6e0f5618a6b6c8bdf5c39035a048f666c0ed5f44fe04ed172f010ab0c36d4"
@@ -23,6 +33,11 @@ digest = "sha256:39c6e0f5618a6b6c8bdf5c39035a048f666c0ed5f44fe04ed172f010ab0c36d
 [[packages]]
 name = "wasi:http"
 registry = "wasi.dev"
+
+[[packages.versions]]
+requirement = "=0.3.1"
+version = "0.3.1"
+digest = "sha256:fac6e40c9b8101cb0a32c76ae63271ffb7c9a66007214d57f3ae8048844d2b5f"
 
 [[packages.versions]]
 requirement = "=0.2.0"
