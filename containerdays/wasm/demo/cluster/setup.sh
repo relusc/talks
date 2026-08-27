@@ -32,7 +32,7 @@ kubectl patch runtimeclass wasmtime-spin-v2 \
 
 kubectl apply -f https://github.com/spinframework/spin-operator/releases/download/v${SPIN_VERSION}/spin-operator.shim-executor.yaml
 
-docker cp cluster/assets/containerd-shim-spin-v2 \
+docker cp cluster/containerd-shim-spin-v2 \
   "$WASM_NODE:/usr/local/bin/containerd-shim-spin-v2"
 
 docker exec "$WASM_NODE" \
