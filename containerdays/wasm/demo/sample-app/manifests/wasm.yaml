@@ -16,7 +16,7 @@ spec:
       terminationGracePeriodSeconds: 0
       containers:
         - name: wasmtime
-          image: registry.local:5000/sample-app-wasm:c38135b
+          image: registry.local:5000/sample-app-wasm:b3b972a
           command: ["main.wasm"]
           imagePullPolicy: IfNotPresent
           ports:

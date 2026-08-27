@@ -1,0 +1,8 @@
+apiVersion: core.spinkube.dev/v1alpha1
+kind: SpinApp
+metadata:
+  name: wasm-webserver
+spec:
+  image: registry.local:5000/sample-app-wasm:b3b972a
+  replicas: 1
+  executor: containerd-shim-spin

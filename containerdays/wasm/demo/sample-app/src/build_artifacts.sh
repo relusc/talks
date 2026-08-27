@@ -13,6 +13,8 @@ wkg fetch
 tinygo build \
 	-target=wasip2 \
 	-no-debug \
+	-gc=leaking \
+	-scheduler=none \
 	--wit-package ./wit \
 	--wit-world relusc:containerdays/simpleweb \
 	-o main.wasm \
