@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: container-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: container-demo
+  template:
+    metadata:
+      labels:
+        app: container-demo
+    spec:
+      terminationGracePeriodSeconds: 0
+      containers:
+        - name: container-demo
+          image: registry.local:5000/sample-app-container:b3b972a
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+      nodeSelector:
+        type: container

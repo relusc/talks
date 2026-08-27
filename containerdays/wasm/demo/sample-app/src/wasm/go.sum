@@ -1,0 +1,4 @@
+go.bytecodealliance.org/cm v0.3.0 h1:VhV+4vjZPUGCozCg9+up+FNL3YU6XR+XKghk7kQ0vFc=
+go.bytecodealliance.org/cm v0.3.0/go.mod h1:JD5vtVNZv7sBoQQkvBvAAVKJPhR/bqBH7yYXTItMfZI=
+go.wasmcloud.dev/component v0.0.10 h1:jNZvQybd9lw1+hDphp3Zyhks/MJcT+gP7XmNkKvY99A=
+go.wasmcloud.dev/component v0.0.10/go.mod h1:oJgSyoCaFxhZ9s28XiBWlsm5G8p2XHV0GM6x7Ov4Eew=
