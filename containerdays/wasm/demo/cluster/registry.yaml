@@ -19,7 +19,7 @@ spec:
         app: registry
     spec:
       nodeSelector:
-        type: registry
+        registry: "true"
       containers:
         - name: registry
           image: registry:2

@@ -5,19 +5,13 @@ nodes:
 - role: control-plane
 - role: worker
   labels:
-    type: wasm
+    spin: "true" # Matches the default nodeSelector expected by the Spin operator
 - role: worker
   labels:
-    type: container
+    container: "true"
 - role: worker
   labels:
-    type: registry
+    registry: "true"
   extraPortMappings:
   - containerPort: 30950
     hostPort: 5000
-containerdConfigPatches:
-  - |-
-    [plugins."io.containerd.cri.v1.runtime".containerd.runtimes.spin]
-      runtime_type = "io.containerd.spin.v2"
-    [plugins."io.containerd.cri.v1.runtime".containerd.runtimes.spin.options]
-      SystemdCgroup = true
