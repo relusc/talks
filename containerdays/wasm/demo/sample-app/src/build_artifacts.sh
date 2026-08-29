@@ -19,10 +19,12 @@ image_tag=$(uuidgen | tr -d '-' | tr A-F a-f | cut -c1-7)
 cd wasm
 
 # Fetch WASI dependencies
+# see https://github.com/bytecodealliance/wasm-pkg-tools for more information about `wkg`
 wkg fetch
 
 # Use tinygo as it is specialized on WASM/WASI support
 # standard go build supports WASI preview 1 only
+# see https://github.com/tinygo-org/tinygo
 tinygo build \
 	-target=wasip2 \
 	-no-debug \
