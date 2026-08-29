@@ -3,7 +3,7 @@ kind: SpinApp
 metadata:
   name: wasm-webserver
 spec:
-  image: registry.local:5000/sample-app-wasm:849a371
+  image: registry.local:5000/sample-app-wasm:d808e72
   replicas: 1
   executor: containerd-shim-spin
   checks:

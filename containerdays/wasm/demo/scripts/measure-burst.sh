@@ -9,6 +9,7 @@ ITERATIONS="${3:-}"
 NAMESPACE="${NAMESPACE:-default}"
 TIMEOUT="${TIMEOUT:-120}"
 POLL_INTERVAL="${POLL_INTERVAL:-0.05}"
+BASELINE_REPLICAS="${BASELINE_REPLICAS:-1}"
 
 if [[ -z "${DEPLOYMENT}" || -z "${REPLICAS}" || -z "${ITERATIONS}" ]]; then
   echo "Usage:"
@@ -21,6 +22,12 @@ if [[ -z "${DEPLOYMENT}" || -z "${REPLICAS}" || -z "${ITERATIONS}" ]]; then
   echo "  NAMESPACE=default"
   echo "  TIMEOUT=120"
   echo "  POLL_INTERVAL=0.05"
+  echo "  BASELINE_REPLICAS=1  # replica floor to return to between bursts"
+  exit 1
+fi
+
+if [[ "${REPLICAS}" -le "${BASELINE_REPLICAS}" ]]; then
+  echo "Error: replicas (${REPLICAS}) must be greater than BASELINE_REPLICAS (${BASELINE_REPLICAS})." >&2
   exit 1
 fi
 
@@ -51,14 +58,14 @@ pod_count() {
   kubectl get pods -n "${NAMESPACE}" -l "${SELECTOR}" -o name 2>/dev/null | wc -l | tr -d ' '
 }
 
-scale_to_zero() {
-  kubectl scale deployment "${DEPLOYMENT}" -n "${NAMESPACE}" --replicas=0 >/dev/null
+scale_to_baseline() {
+  kubectl scale deployment "${DEPLOYMENT}" -n "${NAMESPACE}" --replicas="${BASELINE_REPLICAS}" >/dev/null
 
   local deadline=$(( $(date +%s) + TIMEOUT ))
   while true; do
-    [[ "$(pod_count)" -eq 0 ]] && return 0
+    [[ "$(pod_count)" -eq "${BASELINE_REPLICAS}" ]] && return 0
     if [[ "$(date +%s)" -ge "${deadline}" ]]; then
-      echo "Error: Pods did not terminate within ${TIMEOUT}s." >&2
+      echo "Error: Pods did not settle at baseline (${BASELINE_REPLICAS}) within ${TIMEOUT}s." >&2
       kubectl get pods -n "${NAMESPACE}" -l "${SELECTOR}" -o wide >&2
       return 1
     fi
@@ -151,20 +158,21 @@ print_stats() {
 echo
 echo "Pod burst startup observation"
 echo "============================="
-echo "Deployment:  ${DEPLOYMENT}"
-echo "Selector:    ${SELECTOR}"
-echo "Namespace:   ${NAMESPACE}"
-echo "Burst size:  ${REPLICAS}"
-echo "Iterations:  ${ITERATIONS}"
-echo "Gate:        Running phase"
+echo "Deployment:          ${DEPLOYMENT}"
+echo "Selector:            ${SELECTOR}"
+echo "Namespace:           ${NAMESPACE}"
+echo "Baseline replicas:   ${BASELINE_REPLICAS}"
+echo "Burst size:          ${REPLICAS}"
+echo "Iterations:          ${ITERATIONS}"
+echo "Gate:                Running phase"
 echo
 
-echo "Ensuring deployment is scaled to zero..."
-scale_to_zero
+echo "Ensuring deployment is scaled to baseline (${BASELINE_REPLICAS})..."
+scale_to_baseline
 
 echo "Warming up artifact/runtime (also pre-pulls image/module onto the node)..."
 run_burst "${REPLICAS}" >/dev/null
-scale_to_zero
+scale_to_baseline
 echo "Warm-up complete."
 echo
 
@@ -172,18 +180,18 @@ echo "Running measurements..."
 echo
 
 for ((i = 1; i <= ITERATIONS; i++)); do
-  scale_to_zero
+  scale_to_baseline
 
   duration="$(run_burst "${REPLICAS}")"
   printf "%2d  burst-complete: %8s ms\n" "${i}" "${duration}"
   echo "${duration}" >> "${RESULT_FILE}"
 
-  scale_to_zero
+  scale_to_baseline
 done
 
 echo
 echo "======================================================================"
 echo "Burst-completion time (harness wall clock, includes poll/kubectl overhead)"
 echo "----------------------------------------------------------------------"
-print_stats "${RESULT_FILE}" "burst-to-${REPLICAS}"
+print_stats "${RESULT_FILE}" "burst-${BASELINE_REPLICAS}-to-${REPLICAS}"
 echo "======================================================================"
