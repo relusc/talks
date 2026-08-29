@@ -49,13 +49,6 @@ helm upgrade --install spin-operator \
 # Create SpinAppExecutor; tells the Spin Operator to use the RuntimeClass we just created to run Spin Apps
 kubectl apply -f https://github.com/spinframework/spin-operator/releases/download/v${SPIN_VERSION}/spin-operator.shim-executor.yaml
 
-# Copy WASM spin shim to WASM-enabled node and make it executable
-# docker cp cluster/containerd-shim-spin-v2 \
-#   "$WASM_NODE:/usr/local/bin/containerd-shim-spin-v2"
-
-# docker exec "$WASM_NODE" \
-#   chmod +x /usr/local/bin/containerd-shim-spin-v2
-
 ##################################
 ## Local registry setup
 ##################################
