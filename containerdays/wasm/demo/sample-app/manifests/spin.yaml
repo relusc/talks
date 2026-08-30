@@ -3,13 +3,6 @@ kind: SpinApp
 metadata:
   name: wasm-webserver
 spec:
-  image: registry.local:5000/sample-app-wasm:d808e72
+  image: registry.local:5000/sample-app-wasm:3d54a83
   replicas: 1
   executor: containerd-shim-spin
-  checks:
-    readiness:
-      httpGet:
-        path: /healthz
-        httpHeaders:
-          - name: X-Conference-Name
-            value: ContainerDays

@@ -6,12 +6,7 @@ nodes:
 - role: worker
   labels:
     spin: "true" # Matches the default nodeSelector expected by the Spin operator
-- role: worker
-  labels:
-    container: "true"
-- role: worker
-  labels:
-    registry: "true"
+  # Add mappings for exposing local registry
   extraPortMappings:
   - containerPort: 30950
     hostPort: 5000

@@ -15,13 +15,7 @@ spec:
       terminationGracePeriodSeconds: 0
       containers:
         - name: container-webserver
-          image: registry.local:5000/sample-app-container:d808e72
+          image: registry.local:5000/sample-app-container:3d54a83
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
-          readinessProbe:
-            httpGet:
-              path: /healthz
-              port: 8080
-      nodeSelector:
-        container: "true"

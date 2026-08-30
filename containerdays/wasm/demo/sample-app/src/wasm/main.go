@@ -8,7 +8,6 @@ package main
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 	"time"
 
@@ -21,9 +20,6 @@ func init() {
 	// http.ServeMux (or any third-party router that implements http.Handler).
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", handleRoot)
-	mux.HandleFunc("/healthz", handleHealth)
-
-	log.Println("listening on :8080")
 
 	wasihttp.Handle(mux)
 }
@@ -51,15 +47,6 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
 		Status:      http.StatusOK,
 		ContentType: "application/json",
 		Body:        eb,
-	}
-	writeResponse(resp, w)
-}
-
-func handleHealth(w http.ResponseWriter, r *http.Request) {
-	resp := Response{
-		Status:      http.StatusOK,
-		ContentType: "text/plain",
-		Body:        []byte("OK\n"),
 	}
 	writeResponse(resp, w)
 }

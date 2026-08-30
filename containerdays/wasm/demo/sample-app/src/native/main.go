@@ -21,7 +21,6 @@ type EchoResponseBody struct {
 func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", handleRoot)
-	mux.HandleFunc("/healthz", handleHealth)
 
 	if err := http.ListenAndServe(":8080", mux); err != nil {
 		log.Fatal(err)
@@ -40,15 +39,6 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
 		Status:      http.StatusOK,
 		ContentType: "application/json",
 		Body:        eb,
-	}
-	writeResponse(resp, w)
-}
-
-func handleHealth(w http.ResponseWriter, r *http.Request) {
-	resp := Response{
-		Status:      http.StatusOK,
-		ContentType: "text/plain",
-		Body:        []byte("OK\n"),
 	}
 	writeResponse(resp, w)
 }
