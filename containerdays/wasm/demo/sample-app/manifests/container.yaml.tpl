@@ -15,7 +15,7 @@ spec:
       terminationGracePeriodSeconds: 0
       containers:
         - name: container-webserver
-          image: registry.local:5000/sample-app-container:3d54a83
+          image: localhost:4000/sample-app-container:${IMAGE_TAG}
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080

@@ -11,9 +11,6 @@ CERTMANAGER_VERSION=1.21.1
 SPIN_VERSION=0.6.1
 SHIM_VERSION=0.25.1
 
-WASM_NODE=cd-demo-worker
-REGISTRY_NODE=cd-demo-worker3
-
 ##################################
 ## Create cluster
 ##################################
@@ -58,11 +55,16 @@ REGISTRY_IP=$(kubectl -n registry get svc registry -o jsonpath='{.spec.clusterIP
 
 for NODE in $(kind get nodes --name cd-demo); do
   docker exec "$NODE" \
-    mkdir -p /etc/containerd/certs.d/registry.local:5000
+    mkdir -p /etc/containerd/certs.d/localhost:4000
 
   cat <<EOF | docker exec -i "$NODE" \
-    tee /etc/containerd/certs.d/registry.local:5000/hosts.toml
+    tee /etc/containerd/certs.d/localhost:4000/hosts.toml
 [host."http://${REGISTRY_IP}:5000"]
   capabilities = ["pull", "resolve"]
 EOF
 done
+
+######################################
+## Deploy curl pod to curl other pods
+######################################
+kubectl apply -f ./cluster/curler.yaml

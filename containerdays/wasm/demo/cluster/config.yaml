@@ -2,11 +2,11 @@ kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 name: cd-demo
 nodes:
-- role: control-plane
-- role: worker
-  labels:
-    spin: "true" # Matches the default nodeSelector expected by the Spin operator
-  # Add mappings for exposing local registry
-  extraPortMappings:
-  - containerPort: 30950
-    hostPort: 5000
+  - role: control-plane
+  - role: worker
+    labels:
+      spin: "true" # Matches the default nodeSelector expected by the Spin operator
+    # Add mappings for exposing local registry
+    extraPortMappings:
+      - containerPort: 30950
+        hostPort: 4000

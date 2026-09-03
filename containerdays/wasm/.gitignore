@@ -12,3 +12,7 @@ main
 
 # Do not upload WIT files and deps
 *deps*
+
+# Do not upload generated deployment manifests
+container.yaml
+spin.yaml
